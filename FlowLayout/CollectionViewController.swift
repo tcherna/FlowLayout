@@ -37,20 +37,27 @@ class CollectionViewController: UICollectionViewController {
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 7
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return 4
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
         // Configure the cell
-    
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+		
+		if let cell = cell as? CollectionViewCell {
+			cell.label.text = "\(indexPath)"
+			cell.layer.borderWidth = 1.0
+			cell.layer.borderColor = UIColor.blue.cgColor
+		}
+
+		
         return cell
     }
 
@@ -85,4 +92,11 @@ class CollectionViewController: UICollectionViewController {
     }
     */
 
+}
+
+
+
+class CollectionViewCell: UICollectionViewCell {
+	@IBOutlet weak var label: UILabel!
+	
 }
