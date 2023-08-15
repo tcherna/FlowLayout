@@ -7,17 +7,30 @@
 
 import UIKit
 
+let fix = true
+
 class CollectionViewLayout: UICollectionViewFlowLayout {
 
 	
 	let largeSize = 85.0
 	let spacing = 13.0
+	var fitHeight = 85.0
 	
 	override func prepare() {
 		let inset = spacing/2.0
 
 		super.prepare()
-		self.itemSize = CGSize(width: largeSize, height: largeSize)
+		guard let collectionView = collectionView else { return }
+		//++++
+		if (fix) {
+			let availableHeight = collectionView.bounds.height
+			let rows = collectionView.numberOfSections
+			fitHeight = (availableHeight/CGFloat(rows)).rounded(.down)
+			self.itemSize = CGSize(width: largeSize, height: fitHeight)
+		} else {
+			self.itemSize = CGSize(width: largeSize, height: largeSize)
+		}
+		//----
 		self.minimumLineSpacing = spacing
 		self.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
 		self.minimumInteritemSpacing = spacing
@@ -35,6 +48,13 @@ class CollectionViewLayout: UICollectionViewFlowLayout {
 			
 			let smallHeight = 33.0
 			let delta = largeSize - smallHeight
+			
+			//++++
+			if (fix) {
+				attribute.bounds.size.height = largeSize
+				attribute.center.y += (largeSize-fitHeight)*0.5 * CGFloat(attribute.indexPath.section + 1)
+			}
+			//----
 			
 			if (attribute.indexPath.section == 0) {
 				
